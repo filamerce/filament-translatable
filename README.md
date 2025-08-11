@@ -34,13 +34,13 @@ php artisan filament:assets
 ## Setup
 
 ```php
-use Filamerce\FilamentTranslatable\FilamentTranslateFieldPlugin;
+use Filamerce\FilamentTranslatable\FilamentTranslatablePlugin;
 
 public function panel(Panel $panel): Panel
 {
     return $panel
         // ...
-        ->plugin(FilamentTranslateFieldPlugin::make());
+        ->plugin(FilamentTranslatablePlugin::make());
 }
 ```
   
@@ -49,7 +49,7 @@ public function panel(Panel $panel): Panel
 To set up the locales that can be used to translate content, you can pass an array of locales to the `locales()` plugin method:
   
 ```php
-FilamentTranslateFieldPlugin::make()
+FilamentTranslatablePlugin::make()
      ->locales(['en', 'pl', 'fr']),
 ```
 
@@ -58,7 +58,7 @@ FilamentTranslateFieldPlugin::make()
 You can set default locale using `defaultLocale()` method:
 
 ```php
-FilamentTranslateFieldPlugin::make()
+FilamentTranslatablePlugin::make()
      ->defaultLocale('pl'),
 ```
 
@@ -67,7 +67,7 @@ FilamentTranslateFieldPlugin::make()
 You can set locale labels `getLocaleLabelUsing()` method:
 
 ```php
-FilamentTranslateFieldPlugin::make()
+FilamentTranslatablePlugin::make()
     ->getLocaleLabelUsing(fn ($locale) => match ($locale) {
         'pl' => __('Polish'),
         'en' => __('English')
@@ -79,8 +79,8 @@ FilamentTranslateFieldPlugin::make()
 You can enable or disable flags in locale labels using (disabled by default):
 
 ```php
-FilamentTranslateFieldPlugin::make()
-    ->useFlagsInLocaleLabels(true)
+FilamentTranslatablePlugin::make()
+    ->displayFlagsInLocaleLabels(true)
 ```
 
 ### Setting flag width
@@ -88,7 +88,7 @@ FilamentTranslateFieldPlugin::make()
 You can set flag width using:
 
 ```php
-FilamentTranslateFieldPlugin::make()
+FilamentTranslatablePlugin::make()
     ->flagWidth('24px')
 ```
 
@@ -97,8 +97,8 @@ FilamentTranslateFieldPlugin::make()
 You can enable or disable locale names in locale labels using (enabled by default):
 
 ```php
-FilamentTranslateFieldPlugin::make()
-    ->useNamesInLocaleLabels(false)
+FilamentTranslatablePlugin::make()
+    ->displayNamesInLocaleLabels(false)
 ```
 
 Otherwise, config `app.locale` will be taken.
@@ -355,8 +355,8 @@ You can customize plugin settings directly on component:
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
  
 Translations::make()
-    ->useNamesInLocaleLabels(false)
-    ->useFlagsInLocaleLabels(true)
+    ->displayNamesInLocaleLabels(false)
+    ->displayFlagsInLocaleLabels(true)
     ->flagWidth('48px')
 ```
 

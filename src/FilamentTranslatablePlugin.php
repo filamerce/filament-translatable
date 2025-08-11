@@ -22,9 +22,9 @@ class FilamentTranslatablePlugin implements Plugin
 
     protected ?Closure $getLocaleLabelUsing = null;
 
-    protected bool | Closure $flagsInLocaleLabels = false;
+    protected bool | Closure $displayFlagsInLocaleLabels = false;
 
-    protected bool | Closure $namesInLocaleLabels = true;
+    protected bool | Closure $displayNamesInLocaleLabels = true;
 
     protected string | Closure $flagWidth = '24px';
 
@@ -113,28 +113,28 @@ class FilamentTranslatablePlugin implements Plugin
         return $this;
     }
 
-    public function useFlagsInLocaleLabels(bool $condition = true)
+    public function displayFlagsInLocaleLabels(bool $condition = true)
     {
-        $this->flagsInLocaleLabels = $condition;
+        $this->displayFlagsInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasFlagsInLocaleLabels(): bool
+    public function getDisplayFlagsInLocaleLabels(): bool
     {
-        return $this->flagsInLocaleLabels;
+        return $this->displayFlagsInLocaleLabels;
     }
 
-    public function useNamesInLocaleLabels(bool $condition = true)
+    public function displayNamesInLocaleLabels(bool $condition = true)
     {
-        $this->namesInLocaleLabels = $condition;
+        $this->displayNamesInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasNamesInLocaleLabels(): bool
+    public function getDisplayNamesInLocaleLabels(): bool
     {
-        return $this->namesInLocaleLabels;
+        return $this->displayNamesInLocaleLabels;
     }
 
     public function getLocaleLabelUsing(?Closure $callback): static

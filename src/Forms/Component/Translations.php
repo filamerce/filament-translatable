@@ -44,9 +44,9 @@ class Translations extends Tabs
 
     protected string | Closure | null $flagWidth = null;
 
-    protected bool | Closure | null $flagsInLocaleLabels = null;
+    protected bool | Closure | null $displayFlagsInLocaleLabels = null;
 
-    protected bool | Closure | null $namesInLocaleLabels = null;
+    protected bool | Closure | null $displayNamesInLocaleLabels = null;
 
     /**
      * @var array<string>
@@ -329,28 +329,28 @@ class Translations extends Tabs
         return parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName);
     }
 
-    public function useFlagsInLabels(bool | Closure $condition = true)
+    public function displayFlagsInLabels(bool | Closure $condition = true)
     {
-        $this->flagsInLocaleLabels = $condition;
+        $this->displayFlagsInLocaleLabels = $condition;
 
         return $this;
     }
 
     public function hasFlagsInLocaleLabels(): bool
     {
-        return $this->flagsInLocaleLabels !== null ? $this->evaluate($this->flagsInLocaleLabels) : FilamentTranslatablePlugin::get()->hasFlagsInLocaleLabels();
+        return $this->displayFlagsInLocaleLabels !== null ? $this->evaluate($this->displayFlagsInLocaleLabels) : FilamentTranslatablePlugin::get()->getDisplayFlagsInLocaleLabels();
     }
 
-    public function useNamesInLocaleLabels(bool $condition = true)
+    public function displayNamesInLocaleLabels(bool $condition = true)
     {
-        $this->namesInLocaleLabels = $condition;
+        $this->displayNamesInLocaleLabels = $condition;
 
         return $this;
     }
 
     public function hasNamesInLocaleLabels(): bool
     {
-        return $this->namesInLocaleLabels !== null ? $this->evaluate($this->namesInLocaleLabels) : FilamentTranslatablePlugin::get()->hasNamesInLocaleLabels();
+        return $this->displayNamesInLocaleLabels !== null ? $this->evaluate($this->displayNamesInLocaleLabels) : FilamentTranslatablePlugin::get()->getDisplayNamesInLocaleLabels();
     }
 
     public function flagWidth(string | Closure $width): static
