@@ -3,6 +3,7 @@
 namespace Filamerce\FilamentTranslatable\Forms\Component;
 
 use Closure;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
@@ -21,10 +22,19 @@ class Translations extends Tabs
     // @phpstan-ignore property.defaultValue
     protected string $view = 'filament-translatable::forms.components.translations';
 
+    /**
+     * @var null|Closure|array<string>|Collection<int,string>
+     */
     protected null | Closure | array | Collection $locales = null;
 
+    /**
+     * @var null|Closure|array<string>|Collection<int,string>
+     */
     protected null | Closure | array | Collection $exclude = [];
 
+    /**
+     * @var null|Closure|array<string,string>|Collection<string,string>
+     */
     protected null | Closure | array | Collection $localeLabels = null;
 
     protected Closure | bool $hasPrefixLocaleLabel = false;
@@ -50,15 +60,8 @@ class Translations extends Tabs
     protected bool | Closure | null $displayNamesInLocaleLabels = null;
 
     /**
-     * @var array<string>
+     * @param  Closure|array<string>|Collection<int,string>  $exclude
      */
-    protected array $startRenderHooks = [];
-
-    /**
-     * @var array<string>
-     */
-    protected array $endRenderHooks = [];
-
     public function exclude(Closure | array | Collection $exclude): static
     {
         $this->exclude = $exclude;
@@ -67,7 +70,7 @@ class Translations extends Tabs
     }
 
     /**
-     * @param  Closure|array<string>|Collection<string>|null  $locales
+     * @param  Closure|array<string>|Collection<int,string>|null  $locales
      */
     public function locales(Closure | array | Collection | null $locales): static
     {
@@ -76,6 +79,9 @@ class Translations extends Tabs
         return $this;
     }
 
+    /**
+     * @param  Closure|array<string>|Collection<int,string>  $labels
+     */
     public function localeLabels(Closure | array | Collection $labels): static
     {
         $this->localeLabels = $labels;
@@ -111,6 +117,9 @@ class Translations extends Tabs
         return $this;
     }
 
+    /**
+     * @param  Closure|array<string,Action>|null  $actions
+     */
     public function actions(null | Closure | array $actions): static
     {
         $this->actions = $actions;
@@ -119,7 +128,7 @@ class Translations extends Tabs
     }
 
     /**
-     * @return array<string>|Collection<string>
+     * @return array<string>|Collection<int,string>
      */
     public function getLocales(): array | Collection
     {
@@ -127,7 +136,7 @@ class Translations extends Tabs
     }
 
     /**
-     * @return array<string>|Collection<string>
+     * @return array<string>|Collection<int,string>
      */
     public function getLocaleLabels(): array | Collection
     {
@@ -243,7 +252,7 @@ class Translations extends Tabs
                         ->locale($locale)
 
                         ->schema(
-                            collect($this->getChildComponentsByLocale($locale)['default'])
+                            (new Collection($this->getChildComponentsByLocale($locale)['default']))
                                 ->map(fn ($component) => $this->prepareTranslateLocaleComponent($component, $locale))
                                 ->all()
                         ),
@@ -336,7 +345,7 @@ class Translations extends Tabs
         return parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName);
     }
 
-    public function displayFlagsInLocaleLabels(bool | Closure $condition = true)
+    public function displayFlagsInLocaleLabels(bool | Closure $condition = true): static
     {
         $this->displayFlagsInLocaleLabels = $condition;
 
@@ -348,7 +357,7 @@ class Translations extends Tabs
         return $this->displayFlagsInLocaleLabels !== null ? $this->evaluate($this->displayFlagsInLocaleLabels) : FilamentTranslatablePlugin::get()->getDisplayFlagsInLocaleLabels();
     }
 
-    public function displayNamesInLocaleLabels(bool $condition = true)
+    public function displayNamesInLocaleLabels(bool $condition = true): static
     {
         $this->displayNamesInLocaleLabels = $condition;
 

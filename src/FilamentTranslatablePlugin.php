@@ -117,7 +117,7 @@ class FilamentTranslatablePlugin implements Plugin
         return $this;
     }
 
-    public function displayFlagsInLocaleLabels(bool $condition = true)
+    public function displayFlagsInLocaleLabels(bool $condition = true): static
     {
         $this->displayFlagsInLocaleLabels = $condition;
 
@@ -129,7 +129,7 @@ class FilamentTranslatablePlugin implements Plugin
         return $this->displayFlagsInLocaleLabels;
     }
 
-    public function displayNamesInLocaleLabels(bool $condition = true)
+    public function displayNamesInLocaleLabels(bool $condition = true): static
     {
         $this->displayNamesInLocaleLabels = $condition;
 
