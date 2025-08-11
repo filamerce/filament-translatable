@@ -109,7 +109,7 @@ It has effect in couple methods that can be used on fields.
 
 ### `translatable()` macro
 
-By using the `Translations` component, you can quickly configure single [form field](https://filamentphp.com/docs/4.x/forms/fields/getting-started) to support multiple languages and provide translations for each locale.
+By using the `translatable()` macro, you can quickly configure single [form field](https://filamentphp.com/docs/4.x/forms/fields/getting-started) to support multiple languages and provide translations for each locale.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -163,13 +163,14 @@ After using `translatable()` method, the context of field is switched to `Transl
 use Filament\Forms\Components\TextInput;
 
 TextInput::make('price')
+    ->requiredDefaultLocale()
     ->translatable() // Here context is switched from TextInput to Translations component
     ->vertical()
     ->flagWidth('48px')
 ```
 
 > [!CAUTION]
-> Take care to set field specific methods like `required()` before using `translatable()` method.
+> Take care to set field specific methods like `required()`, `requiredDefaultLocale()` **before** calling `translatable()` method.
 
 
 ### `Translations` component
