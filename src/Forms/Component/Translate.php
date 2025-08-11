@@ -329,7 +329,6 @@ class Translate extends Tabs
 
             if ($childComponents) {
 
-
                 $localeComponent->schema(
                     collect($childComponents)
                         ->map(fn ($childComponent) => $this->prepareTranslateLocaleComponent($childComponent, $locale))
@@ -427,7 +426,7 @@ class Translate extends Tabs
         return (bool) $this->evaluate($this->isVertical);
     }
 
-     public function useFlagsInLabels(bool|Closure $condition = true)
+    public function useFlagsInLabels(bool | Closure $condition = true)
     {
         $this->flagsInLabels = $condition;
 
