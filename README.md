@@ -5,7 +5,7 @@
 
 Filament Translatable is a bunch of tools that helps managing translations.
 
-![filament-translate-field-5](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
+![translatable component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
 
 ## Installation
 
@@ -118,6 +118,8 @@ use Filament\Forms\Components\TextInput;
 TextInput::make('name')
     ->translatable()
 ```
+
+![translatable macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/macro.png)
 
 #### Marking field as required for specified locale
 
