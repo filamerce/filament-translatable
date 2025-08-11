@@ -6,7 +6,6 @@ use Closure;
 use Filament\Forms\Components\Field;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Contracts\HasRenderHookScopes;
 use Filament\Schemas\Schema;
 use Filamerce\FilamentTranslatable\FilamentTranslatablePlugin;
 use Filamerce\FilamentTranslatable\Forms\Component\Translations\Tab;
@@ -58,7 +57,6 @@ class Translations extends Tabs
      * @var array<string>
      */
     protected array $endRenderHooks = [];
-
 
     public function exclude(Closure | array | Collection $exclude): static
     {
@@ -161,7 +159,7 @@ class Translations extends Tabs
 
         $label = $label ?? $locale;
         if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
-        $label = new HtmlString('<div class="text-nowrap">' . $label . '</div>');
+            $label = new HtmlString('<div class="text-nowrap">' . $label . '</div>');
         }
 
         return $label;
