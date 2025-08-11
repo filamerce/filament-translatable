@@ -1,0 +1,23 @@
+@reference "tailwindcss";
+@tailwind utilities;
+
+/* Safelist classes to ensure they are always included */
+.h-0 { height: 0px; }
+.p-0 { padding: 0px; }
+.p-6 { padding: 1.5rem; }
+
+.fi-tt-tabs {
+    @apply flex grow;
+}
+
+.fi-tt-tabs-vertical {
+    @apply flex grow flex-col;
+}
+
+.fi-tt-tabs-langs {
+  @apply flex-auto flex gap-1;
+}
+
+.fi-tt-action-hidden {
+  @apply hidden;
+}
