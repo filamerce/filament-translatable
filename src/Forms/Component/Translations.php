@@ -18,6 +18,7 @@ class Translations extends Tabs
     /**
      * @var view-string
      */
+    // @phpstan-ignore property.defaultValue
     protected string $view = 'filament-translatable::forms.components.translations';
 
     protected null | Closure | array | Collection $locales = null;
@@ -197,7 +198,7 @@ class Translations extends Tabs
         /** @var array<Component> */
         return $this->evaluate($this->childComponents, [
             'locale' => $locale,
-        ]) ?? [];
+        ]);
     }
 
     public function getActiveTab(): int
@@ -253,8 +254,12 @@ class Translations extends Tabs
         return $containers;
     }
 
-    protected function prepareTranslateLocaleComponent(Component $component, string $locale): Component
+    protected function prepareTranslateLocaleComponent(Component | Htmlable | string $component, string $locale): Component | Htmlable | string
     {
+        if (($component instanceof Htmlable && ! $component instanceof Component) || \is_string($component)) {
+            return $component;
+        }
+
         $localeComponent = clone $component;
 
         if ($localeComponent instanceof Field || method_exists($localeComponent, 'getName')) {
@@ -262,6 +267,10 @@ class Translations extends Tabs
             $localeComponentName = $localeComponent->getName();
 
             if (filled($localeComponentName) && is_string($localeComponentName) && ! in_array($localeComponentName, $this->exclude)) {
+
+                assert(\method_exists($localeComponent, 'label'));
+                assert(\method_exists($localeComponent, 'getLabel'));
+                assert(\method_exists($component, 'getLabel'));
 
                 $localeComponent->label($this->getFieldTranslatableLabel($component, $locale) ?? $component->getLabel());
 
@@ -286,10 +295,8 @@ class Translations extends Tabs
                 if (method_exists($localeComponent, 'name')) {
                     $localeComponent->name($localeComponentName . '.' . $locale);
                 }
-                if (method_exists($localeComponent, 'statePath')) {
-                    $localeComponent->statePath($localeComponent->getName());
-                    $localeComponent->flushCachedAbsoluteStatePath();
-                }
+                $localeComponent->statePath($localeComponent->getName());
+                $localeComponent->flushCachedAbsoluteStatePath();
 
                 $decorator = $localeComponent->translationFieldDecorators ?? null;
 

@@ -43,12 +43,14 @@ class FilamentTranslatablePlugin implements Plugin
 
         Field::macro('requiredDefaultLocale', function (bool | Closure $condition = true) {
             $defaultLocale = FilamentTranslatablePlugin::get()->getDefaultLocale();
+            // @phpstan-ignore method.notFound
             $this->requiredLocale($defaultLocale, $condition);
 
             return $this;
         });
 
         Field::macro('requiredLocale', function (string $locale, bool | Closure $condition = true) {
+            // @phpstan-ignore property.notFound
             $this->translationFieldDecorators[$locale][] = function (Field $field) use ($condition) {
                 $field->required($condition);
 
@@ -59,6 +61,7 @@ class FilamentTranslatablePlugin implements Plugin
         });
 
         Field::macro('decorateTranslationField', function (string $locale, ?Closure $decorator = null) {
+            // @phpstan-ignore property.notFound
             $this->translationFieldDecorators[$locale][] = $decorator;
 
             return $this;
@@ -74,6 +77,7 @@ class FilamentTranslatablePlugin implements Plugin
              * @var Field $field
              * @var Field $this
              */
+            // @phpstan-ignore varTag.nativeType
             $field = $this->getClone();
 
             $tabsField = Translations::make($field->getName() . '_translations')

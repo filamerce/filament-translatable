@@ -2,6 +2,7 @@
 
 namespace Filamerce\FilamentTranslatable;
 
+use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
 use Filamerce\FilamentTranslatable\Testing\TestsFilamentTranslateField;
@@ -42,7 +43,7 @@ class FilamentTranslatableServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * @return array<Asset>
+     * @return Asset[]
      */
     protected function getAssets(): array
     {
