@@ -3,8 +3,9 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 [![Total Downloads](https://img.shields.io/packagist/dt/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 
+Filament Translatable is a bunch of tools that helps managing translations.
 
-Filament Translatable is a bunch of components that helps managing translations.
+![filament-translate-field-5](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
 
 ## Installation
 
@@ -272,7 +273,7 @@ Translations::make('translations')
 
 ```
 
-![filament-translate-field-5](https://github.com/webard/filament-translate-field/assets/68525320/a88fcb69-a63d-43a6-857b-5323df877134)
+![filament-translate-field-5](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
 
 
 
