@@ -174,7 +174,7 @@ TextInput::make('price')
     ->flagWidth('48px')
 ```
 
-![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/custom-macro.png)
+![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/macro2.png)
 
 > [!CAUTION]
 > Take care to set field specific methods like `required()`, `requiredDefaultLocale()` **before** calling `translatable()` method.
