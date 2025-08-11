@@ -2,9 +2,12 @@
 
 namespace Filamerce\FilamentTranslatable;
 
+use Closure;
+use Filament\Forms\Components\Field;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Facades\FilamentAsset;
+use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 use Filamerce\FilamentTranslatable\Testing\TestsFilamentTranslateField;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Package;
@@ -32,6 +35,68 @@ class FilamentTranslatableServiceProvider extends PackageServiceProvider
             $this->getAssets(),
             $this->getAssetPackageName()
         );
+
+        Field::macro('requiredDefaultLocale', function (bool | Closure $condition = true) {
+            // @phpstan-ignore property.notFound
+            $this->requiredDefaultLocale = true;
+
+            return $this;
+        });
+
+        Field::macro('getDefaultLocale', function (): ?string {
+            return $this->defaultLocale ?? null;
+        });
+
+        Field::macro('defaultLocale', function (?string $locale = null) {
+            // @phpstan-ignore property.notFound
+            $this->defaultLocale = $locale;
+
+            return $this;
+        });
+
+        Field::macro('requiredLocale', function (string $locale, bool | Closure $condition = true) {
+            // @phpstan-ignore property.notFound
+            $this->translationFieldDecorators[$locale][] = function (Field $field) use ($condition) {
+                $field->required($condition);
+
+                return $field;
+            };
+
+            return $this;
+        });
+
+        Field::macro('decorateTranslationField', function (string $locale, ?Closure $decorator = null) {
+            // @phpstan-ignore property.notFound
+            $this->translationFieldDecorators[$locale][] = $decorator;
+
+            return $this;
+        });
+
+        Field::macro('translatable', function (bool $translatable = true, ?array $locales = null, ?Closure $translationFieldDecorator = null) {
+
+            if (! $translatable) {
+                return $this;
+            }
+
+            /**
+             * @var Field $field
+             * @var Field $this
+             */
+            // @phpstan-ignore varTag.nativeType
+            $field = $this->getClone();
+
+            $tabsField = Translations::make($field->getName() . '_translations')
+                ->locales($locales)
+                ->schema([
+                    $field,
+                ]);
+
+            if ($translationFieldDecorator) {
+                $tabsField = $translationFieldDecorator($tabsField);
+            }
+
+            return $tabsField;
+        });
 
         // Testing
         Testable::mixin(new TestsFilamentTranslateField);

@@ -4,10 +4,8 @@ namespace Filamerce\FilamentTranslatable;
 
 use Closure;
 use Filament\Contracts\Plugin;
-use Filament\Forms\Components\Field;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 
 class FilamentTranslatablePlugin implements Plugin
 {
@@ -38,61 +36,7 @@ class FilamentTranslatablePlugin implements Plugin
         //
     }
 
-    public function boot(Panel $panel): void
-    {
-
-        Field::macro('requiredDefaultLocale', function (bool | Closure $condition = true) {
-            $defaultLocale = FilamentTranslatablePlugin::get()->getDefaultLocale();
-            // @phpstan-ignore method.notFound
-            $this->requiredLocale($defaultLocale, $condition);
-
-            return $this;
-        });
-
-        Field::macro('requiredLocale', function (string $locale, bool | Closure $condition = true) {
-            // @phpstan-ignore property.notFound
-            $this->translationFieldDecorators[$locale][] = function (Field $field) use ($condition) {
-                $field->required($condition);
-
-                return $field;
-            };
-
-            return $this;
-        });
-
-        Field::macro('decorateTranslationField', function (string $locale, ?Closure $decorator = null) {
-            // @phpstan-ignore property.notFound
-            $this->translationFieldDecorators[$locale][] = $decorator;
-
-            return $this;
-        });
-
-        Field::macro('translatable', function (bool $translatable = true, ?array $locales = null, ?Closure $translationFieldDecorator = null) {
-
-            if (! $translatable) {
-                return $this;
-            }
-
-            /**
-             * @var Field $field
-             * @var Field $this
-             */
-            // @phpstan-ignore varTag.nativeType
-            $field = $this->getClone();
-
-            $tabsField = Translations::make($field->getName() . '_translations')
-                ->locales($locales)
-                ->schema([
-                    $field,
-                ]);
-
-            if ($translationFieldDecorator) {
-                $tabsField = $translationFieldDecorator($tabsField);
-            }
-
-            return $tabsField;
-        });
-    }
+    public function boot(Panel $panel): void {}
 
     public static function make(): static
     {

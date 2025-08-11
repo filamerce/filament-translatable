@@ -1,15 +1,11 @@
 <?php
 
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filamerce\FilamentTranslatable\Forms\Component\Translate;
-use Filamerce\FilamentTranslatable\Tests\Forms\Fixtures\Livewire as FormLivewireComponent;
+use Filamerce\FilamentTranslatable\Tests\Forms\Fixtures\TestComponentWithTranslate;
 use Filamerce\FilamentTranslatable\Tests\TestCase;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Livewire\Livewire;
+
+use function Pest\Livewire\livewire;
 
 uses(TestCase::class);
 
@@ -19,9 +15,15 @@ it('can fill and assert data in a translate', function (array $list) {
 
     $livewireConfig = Arr::except($list, ['data']);
 
-    Livewire::test(TestComponentWithTranslate::class, $livewireConfig)
+    livewire(TestComponentWithTranslate::class, $livewireConfig)
         ->fillForm($data)
-        ->assertFormSet($data);
+        ->assertSchemaStateSet($data)
+        ->assertSchemaComponentExists('translations::data::tabs.::data::tab.title.en', checkComponentUsing: function ($state) {
+
+            expect($state->getDefaultLocale())->toBe('en');
+
+            return true;
+        });
 
 })->with(function () {
 
@@ -47,31 +49,3 @@ it('can fill and assert data in a translate', function (array $list) {
         ],
     ];
 });
-
-class TestComponentWithTranslate extends FormLivewireComponent
-{
-    public array $translateConfig = [];
-
-    public function form(Form $form): Form
-    {
-        $exclude = $this->translateConfig['exclude'] ?? [];
-        $locales = $this->translateConfig['locales'] ?? [];
-
-        return $form
-            ->schema([
-                Translate::make()
-                    ->schema([
-                        TextInput::make('title')->required(),
-                        Textarea::make('content'),
-                    ])
-                    ->locales($locales)
-                    ->exclude($exclude),
-            ])
-            ->statePath('data');
-    }
-
-    public function render(): View
-    {
-        return view('forms.fixtures.form');
-    }
-}

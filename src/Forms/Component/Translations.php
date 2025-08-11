@@ -19,13 +19,14 @@ class Translations extends Tabs
     /**
      * @var view-string
      */
-    // @phpstan-ignore property.defaultValue
     protected string $view = 'filament-translatable::forms.components.translations';
 
     /**
      * @var null|Closure|array<string>|Collection<int,string>
      */
     protected null | Closure | array | Collection $locales = null;
+
+    protected ?string $defaultLocale = null;
 
     /**
      * @var null|Closure|array<string>|Collection<int,string>
@@ -67,6 +68,18 @@ class Translations extends Tabs
         $this->exclude = $exclude;
 
         return $this;
+    }
+
+    public function defaultLocale(string | Closure | null $locale): static
+    {
+        $this->defaultLocale = $locale;
+
+        return $this;
+    }
+
+    public function getDefaultLocale(): ?string
+    {
+        return $this->evaluate($this->defaultLocale ?? FilamentTranslatablePlugin::get()->getDefaultLocale());
     }
 
     /**
@@ -118,7 +131,7 @@ class Translations extends Tabs
     }
 
     /**
-     * @param  Closure|array<string,Action>|null  $actions
+     * @param  Closure|Action[]|null  $actions
      */
     public function actions(null | Closure | array $actions): static
     {
@@ -265,6 +278,7 @@ class Translations extends Tabs
 
     protected function prepareTranslateLocaleComponent(Component | Htmlable | string $component, string $locale): Component | Htmlable | string
     {
+
         if (($component instanceof Htmlable && ! $component instanceof Component) || \is_string($component)) {
             return $component;
         }
@@ -276,6 +290,16 @@ class Translations extends Tabs
             $localeComponentName = $localeComponent->getName();
 
             if (filled($localeComponentName) && is_string($localeComponentName) && ! in_array($localeComponentName, $this->exclude)) {
+
+                // this is macro
+                // @phpstan-ignore method.notFound
+                $localeComponent->defaultLocale($this->getDefaultLocale());
+
+                if ($this->requiredDefaultLocale ?? false) {
+                    // this is macro
+                    // @phpstan-ignore method.notFound, method.notFound
+                    $localeComponent->requiredLocale($localeComponent->getDefaultLocale() ?? $this->getDefaultLocale());
+                }
 
                 assert(\method_exists($localeComponent, 'label'));
                 assert(\method_exists($localeComponent, 'getLabel'));
@@ -314,6 +338,7 @@ class Translations extends Tabs
                         $localeComponent = $callback($localeComponent);
                     }
                 }
+
             }
 
         } else {
