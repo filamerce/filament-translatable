@@ -3,11 +3,10 @@
 namespace Filamerce\FilamentTranslatable;
 
 use Closure;
-use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Filament\Forms\Components\Field;
+use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
-use Filamerce\FilamentTranslatable\Forms\Component\Translate;
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 
 class FilamentTranslatablePlugin implements Plugin
