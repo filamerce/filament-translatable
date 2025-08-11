@@ -9,17 +9,17 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Contracts\HasRenderHookScopes;
 use Filament\Schemas\Schema;
 use Filamerce\FilamentTranslatable\FilamentTranslatablePlugin;
-use Filamerce\FilamentTranslatable\Forms\Component\Translate\Tab;
+use Filamerce\FilamentTranslatable\Forms\Component\Translations\Tab;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 
-class Translate extends Tabs
+class Translations extends Tabs
 {
     /**
      * @var view-string
      */
-    protected string $view = 'filament-translatable::forms.components.translate';
+    protected string $view = 'filament-translatable::forms.components.translations';
 
     protected null | Closure | array | Collection $locales = null;
 
@@ -45,9 +45,9 @@ class Translate extends Tabs
 
     protected string | Closure | null $flagWidth = null;
 
-    protected bool | Closure | null $flagsInLabels = null;
+    protected bool | Closure | null $flagsInLocaleLabels = null;
 
-    protected bool | Closure | null $namesInLabels = null;
+    protected bool | Closure | null $namesInLocaleLabels = null;
 
     /**
      * @var array<string>
@@ -59,13 +59,6 @@ class Translate extends Tabs
      */
     protected array $endRenderHooks = [];
 
-    public static function make(string | Htmlable | Closure | null $label = null): static
-    {
-        $static = app(static::class, ['label' => $label]);
-        $static->configure();
-
-        return $static;
-    }
 
     public function exclude(Closure | array | Collection $exclude): static
     {
@@ -126,13 +119,6 @@ class Translate extends Tabs
         return $this;
     }
 
-    public function persistTabInQueryString(string | Closure | null $key = 'tab'): static
-    {
-        $this->tabQueryStringKey = $key;
-
-        return $this;
-    }
-
     /**
      * @return array<string>|Collection<string>
      */
@@ -152,7 +138,7 @@ class Translate extends Tabs
                 ->all();
     }
 
-    public function getLocaleLabel(string $locale): string | Htmlable
+    public function getLocaleLabel(string $locale, bool $withFlag = true): string | Htmlable
     {
 
         $labels = $this->evaluate($this->localeLabels, [
@@ -161,11 +147,11 @@ class Translate extends Tabs
 
         $label = null;
 
-        if ($this->hasFlagsInLabels()) {
-            $label .= '<img src="' . \asset('vendor/filament-translatable/flags/' . $locale . '.svg') . '" style="width:' . $this->getFlagWidth() . '" alt="' . $locale . '" class="inline-block align-middle' . ($this->hasNamesInLabels() ? ' me-2' : '') . '" />';
+        if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
+            $label .= '<img src="' . \asset('vendor/filament-translatable/flags/' . $locale . '.svg') . '" style="width:' . $this->getFlagWidth() . '" alt="' . $locale . '" class="inline-block align-middle' . ($this->hasNamesInLocaleLabels() ? ' me-2' : '') . '" />';
         }
 
-        if ($this->hasNamesInLabels()) {
+        if ($this->hasNamesInLocaleLabels()) {
             if ($labels && is_array($labels)) {
                 $label .= data_get($labels, $locale);
             } elseif ($labels && is_string($labels)) {
@@ -173,9 +159,12 @@ class Translate extends Tabs
             }
         }
 
-        $label = new HtmlString('<div class="text-nowrap">' . $label ?? $locale . '</div>');
+        $label = $label ?? $locale;
+        if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
+        $label = new HtmlString('<div class="text-nowrap">' . $label . '</div>');
+        }
 
-        return $label ?? $locale;
+        return $label;
     }
 
     public function hasPrefixLocaleLabel(Component $component, string $locale): bool
@@ -236,16 +225,6 @@ class Translate extends Tabs
         return $this->evaluate($this->activeTab, ['locales' => $this->getLocales()]);
     }
 
-    public function getTabQueryStringKey(): ?string
-    {
-        return $this->evaluate($this->tabQueryStringKey);
-    }
-
-    public function isTabPersistedInQueryString(): bool
-    {
-        return filled($this->getTabQueryStringKey());
-    }
-
     /**
      * @return array<Schema>
      */
@@ -288,7 +267,7 @@ class Translate extends Tabs
 
                 $localeComponent->label($this->getFieldTranslatableLabel($component, $locale) ?? $component->getLabel());
 
-                $localeLabel = $this->getLocaleLabel($locale);
+                $localeLabel = $this->getLocaleLabel($locale, false);
                 $performedLocaleLabel = $this->preformLocaleLabelUsing
                     ? $this->evaluate($this->preformLocaleLabelUsing, [
                         'locale' => $locale,
@@ -299,7 +278,7 @@ class Translate extends Tabs
                     $performedLocaleLabel = "({$localeLabel})";
                 }
                 if ($this->hasPrefixLocaleLabel($component, $locale)) {
-                    $localeComponent->label("{$performedLocaleLabel} {$localeComponent->getLabel()}");
+                    $localeComponent->label(new HtmlString("{$performedLocaleLabel} {$localeComponent->getLabel()}"));
                 }
                 if ($this->hasSuffixLocaleLabel($component, $locale)) {
                     $localeComponent->label("{$localeComponent->getLabel()} {$performedLocaleLabel}");
@@ -352,102 +331,28 @@ class Translate extends Tabs
         return parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName);
     }
 
-    /**
-     * @param  array<string>  $hooks
-     */
-    public function startRenderHooks(array $hooks): static
-    {
-        $this->startRenderHooks = $hooks;
-
-        return $this;
-    }
-
-    /**
-     * @param  array<string>  $hooks
-     */
-    public function endRenderHooks(array $hooks): static
-    {
-        $this->endRenderHooks = $hooks;
-
-        return $this;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getStartRenderHooks(): array
-    {
-        return $this->startRenderHooks;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getEndRenderHooks(): array
-    {
-        return $this->endRenderHooks;
-    }
-
-    /**
-     * @return array<string>
-     */
-    public function getRenderHookScopes(): array
-    {
-        $livewire = $this->getLivewire();
-
-        if (! ($livewire instanceof HasRenderHookScopes)) {
-            return [];
-        }
-
-        return $livewire->getRenderHookScopes();
-    }
-
-    public function livewireProperty(string | Closure | null $property): static
-    {
-        $this->livewireProperty = $property;
-
-        return $this;
-    }
-
-    public function getLivewireProperty(): ?string
-    {
-        return $this->evaluate($this->livewireProperty);
-    }
-
-    public function vertical(bool | Closure $condition = true): static
-    {
-        $this->isVertical = $condition;
-
-        return $this;
-    }
-
-    public function isVertical(): bool
-    {
-        return (bool) $this->evaluate($this->isVertical);
-    }
-
     public function useFlagsInLabels(bool | Closure $condition = true)
     {
-        $this->flagsInLabels = $condition;
+        $this->flagsInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasFlagsInLabels(): bool
+    public function hasFlagsInLocaleLabels(): bool
     {
-        return $this->flagsInLabels !== null ? $this->evaluate($this->flagsInLabels) : FilamentTranslatablePlugin::get()->hasFlagsInLabels();
+        return $this->flagsInLocaleLabels !== null ? $this->evaluate($this->flagsInLocaleLabels) : FilamentTranslatablePlugin::get()->hasFlagsInLocaleLabels();
     }
 
-    public function useNamesInLabels(bool $condition = true)
+    public function useNamesInLocaleLabels(bool $condition = true)
     {
-        $this->namesInLabels = $condition;
+        $this->namesInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasNamesInLabels(): bool
+    public function hasNamesInLocaleLabels(): bool
     {
-        return $this->namesInLabels !== null ? $this->evaluate($this->namesInLabels) : FilamentTranslatablePlugin::get()->hasNamesInLabels();
+        return $this->namesInLocaleLabels !== null ? $this->evaluate($this->namesInLocaleLabels) : FilamentTranslatablePlugin::get()->hasNamesInLocaleLabels();
     }
 
     public function flagWidth(string | Closure $width): static

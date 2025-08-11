@@ -1,10 +1,10 @@
 <?php
 
-namespace Filamerce\FilamentTranslatable\Forms\Component\Translate;
+namespace Filamerce\FilamentTranslatable\Forms\Component\Translations;
 
 class Tab extends \Filament\Schemas\Components\Tabs\Tab
 {
-    protected string $view = 'filament-translatable::forms.components.translate-tab';
+    protected string $view = 'filament-translatable::forms.components.translation-tab';
 
     protected ?string $locale = null;
 

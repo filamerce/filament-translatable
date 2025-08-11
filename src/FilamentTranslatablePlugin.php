@@ -3,11 +3,12 @@
 namespace Filamerce\FilamentTranslatable;
 
 use Closure;
+use Filament\Panel;
 use Filament\Contracts\Plugin;
 use Filament\Forms\Components\Field;
-use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Filamerce\FilamentTranslatable\Forms\Component\Translate;
+use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 
 class FilamentTranslatablePlugin implements Plugin
 {
@@ -22,9 +23,9 @@ class FilamentTranslatablePlugin implements Plugin
 
     protected ?Closure $getLocaleLabelUsing = null;
 
-    protected bool | Closure $flagsInLabels = false;
+    protected bool | Closure $flagsInLocaleLabels = false;
 
-    protected bool | Closure $namesInLabels = true;
+    protected bool | Closure $namesInLocaleLabels = true;
 
     protected string | Closure $flagWidth = '24px';
 
@@ -76,7 +77,7 @@ class FilamentTranslatablePlugin implements Plugin
              */
             $field = $this->getClone();
 
-            $tabsField = Translate::make($field->getName() . '_translations')
+            $tabsField = Translations::make($field->getName() . '_translations')
                 ->locales($locales)
                 ->schema([
                     $field,
@@ -113,28 +114,28 @@ class FilamentTranslatablePlugin implements Plugin
         return $this;
     }
 
-    public function useFlagsInLabels(bool $condition = true)
+    public function useFlagsInLocaleLabels(bool $condition = true)
     {
-        $this->flagsInLabels = $condition;
+        $this->flagsInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasFlagsInLabels(): bool
+    public function hasFlagsInLocaleLabels(): bool
     {
-        return $this->flagsInLabels;
+        return $this->flagsInLocaleLabels;
     }
 
-    public function useNamesInLabels(bool $condition = true)
+    public function useNamesInLocaleLabels(bool $condition = true)
     {
-        $this->namesInLabels = $condition;
+        $this->namesInLocaleLabels = $condition;
 
         return $this;
     }
 
-    public function hasNamesInLabels(): bool
+    public function hasNamesInLocaleLabels(): bool
     {
-        return $this->namesInLabels;
+        return $this->namesInLocaleLabels;
     }
 
     public function getLocaleLabelUsing(?Closure $callback): static

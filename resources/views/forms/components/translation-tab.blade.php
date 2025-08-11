@@ -29,7 +29,7 @@
                 'tabindex' => '0',
                 'wire:key' =>
                     "{$this->getId()}.{$getStatePath()}." .
-                    \Filamerce\FilamentTranslatable\Forms\Component\Translate::class .
+                    \Filamerce\FilamentTranslatable\Forms\Component\Translations::class .
                     ".tabs.{$id}",
             ],
             escape: false,
