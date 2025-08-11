@@ -307,7 +307,9 @@ If you discover any security related issues, please email code@webard.me instead
 
 ## Credits
 
-- [Carly]
+- [Lipis](https://github.com/lipis/flag-icons) for icons
+- [Solution Forest](https://github.com/solutionforest/filament-translate-field) for great inspiration
+- [Outer Web](https://github.com/outer-web/filament-translatable-fields) for Macro idea
 - [All Contributors](../../contributors)
 
 ## License
