@@ -329,7 +329,7 @@ class Translations extends Tabs
         return parent::resolveDefaultClosureDependencyForEvaluationByName($parameterName);
     }
 
-    public function displayFlagsInLabels(bool | Closure $condition = true)
+    public function displayFlagsInLocaleLabels(bool | Closure $condition = true)
     {
         $this->displayFlagsInLocaleLabels = $condition;
 

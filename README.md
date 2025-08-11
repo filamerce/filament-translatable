@@ -169,8 +169,12 @@ TextInput::make('price')
     ->requiredDefaultLocale()
     ->translatable() // Here context is switched from TextInput to Translations component
     ->vertical()
+    ->displayFlagsInLocaleLabels(true)
+    ->displayNamesInLocaleLabels(false)
     ->flagWidth('48px')
 ```
+
+![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/custom-macro.png)
 
 > [!CAUTION]
 > Take care to set field specific methods like `required()`, `requiredDefaultLocale()` **before** calling `translatable()` method.
@@ -188,6 +192,8 @@ Translations::make('translations') // name is required to properly handle action
         TextInput::make('name')
     ])
 ```
+
+![translatable horizontal component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/horizontal-component.png)
 
 > [!NOTE]  
 > Using `translatable()` method within `Translations` component is not needed.
