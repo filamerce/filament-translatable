@@ -199,7 +199,7 @@ Translations::make('translations') // name is required to properly handle action
 > Using `translatable()` method within `Translations` component is not needed.
 
 > [!IMPORTANT]  
-> Take care to set diffrent names for each `Translations` component in multiple usage.
+> Take care to set different names for each `Translations` component in multiple usage.
 
 #### Setting the translatable locales for a particular fields
 
