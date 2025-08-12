@@ -8,6 +8,7 @@ use Filament\Forms\Components\Field;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
+use Filamerce\FilamentTranslatable\Enums\TranslationMode;
 use Filamerce\FilamentTranslatable\FilamentTranslatablePlugin;
 use Filamerce\FilamentTranslatable\Forms\Component\Translations\Tab;
 use Illuminate\Contracts\Support\Htmlable;
@@ -60,6 +61,8 @@ class Translations extends Tabs
 
     protected bool | Closure | null $displayNamesInLocaleLabels = null;
 
+    protected Closure | TranslationMode | null $translationMode = null;
+
     /**
      * @param  Closure|array<string>|Collection<int,string>  $exclude
      */
@@ -68,6 +71,18 @@ class Translations extends Tabs
         $this->exclude = $exclude;
 
         return $this;
+    }
+
+    public function translationMode(TranslationMode | Closure | null $mode): static
+    {
+        $this->translationMode = $mode;
+
+        return $this;
+    }
+
+    public function getTranslationMode(): TranslationMode
+    {
+        return $this->evaluate($this->translationMode ?? FilamentTranslatablePlugin::get()->getTranslationMode());
     }
 
     public function defaultLocale(string | Closure | null $locale): static
@@ -324,10 +339,22 @@ class Translations extends Tabs
                     $localeComponent->label("{$localeComponent->getLabel()} {$performedLocaleLabel}");
                 }
 
-                // Spatie transltable field format
                 if (method_exists($localeComponent, 'name')) {
-                    $localeComponent->name($localeComponentName . '.' . $locale);
+                    switch ($this->getTranslationMode()) {
+                        case TranslationMode::Astrotomic:
+                            $localeComponentName = "{$localeComponentName}:{$locale}";
+
+                            break;
+                        case TranslationMode::Spatie:
+                        default:
+                            $localeComponentName = "{$localeComponentName}.{$locale}";
+
+                            break;
+                    }
+
+                    $localeComponent->name($localeComponentName);
                 }
+
                 $localeComponent->statePath($localeComponent->getName());
                 $localeComponent->flushCachedAbsoluteStatePath();
 

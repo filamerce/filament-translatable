@@ -1,12 +1,16 @@
 {
     "name": "filamerce/filament-translatable",
-    "description": "Filament Translate Field",
+    "description": "Highly customizable Translation component for FilamentPHP.",
     "keywords": [
         "webard",
         "filamerce",
         "laravel",
         "filament",
+        "filamentphp",
+        "translations",
+        "locale",
         "laravel-translatable",
+        "spatie-translatable",
         "filament-translatable",
         "filament-translate-field"
     ],
@@ -23,11 +27,15 @@
             "role": "Developer"
         }
     ],
+    "suggest": {
+        "spatie/laravel-translatable": "For handling translations in Laravel using JSON fields."
+    },
     "require": {
         "php": "^8.2",
         "filament/filament": "^4.0"
     },
     "require-dev": {
+        "astrotomic/laravel-translatable": "^11.16",
         "larastan/larastan": "^3.0",
         "laravel/pint": "^1.0",
         "orchestra/testbench": "^9.14|^10.0",
@@ -67,6 +75,6 @@
             ]
         }
     },
-    "minimum-stability": "beta",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

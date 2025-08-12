@@ -29,8 +29,39 @@ php artisan filament:assets
 
 ## Configuration
 
-- Define translatable fields in your model using a translatable package (e.g., "spatie/laravel-translatable" or "dimsav/laravel-translatable").
-- Configure translatable fields in the model's *$translatable* property.
+## With `spatie/laravel-translatable`
+
+Package from [spatie](https://github.com/spatie/laravel-translatable) is default supported way of handling translations. Follow instructions from package README.md to properly configure your Model.
+
+## With `Astrotomic/laravel-translatable`
+
+Package from [spatie](https://github.com/astrotomic/laravel-translatable) is alternative supported way of handling translations.
+
+Follow [instructions](https://docs.astrotomic.info/laravel-translatable/installation#models) to properly configure your Model, but instead of using `Translatable` trait from Astrotomic package, please use `Filamerce\FilamentTranslatable\Traits\AstrotomicTranslatable`.
+
+In case of using Astrotomic package, please configure plugin with proper mode:
+
+```php
+use Filamerce\FilamentTranslatable\Enums\TranslationMode;
+
+FilamentTranslatablePlugin::make()
+    ->translationMode(TranslationMode::Astrotomic)
+```
+
+you can also configure translationMode per component:
+
+```php
+ Translations::make('translations')
+    ->translationMode(TranslationMode::Astrotomic)
+```
+
+or per field:
+
+```php
+ TextInput::make('name')
+    ->translatable()
+    ->translationMode(TranslationMode::Astrotomic)
+```
 
 ## Setup
 

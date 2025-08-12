@@ -5,6 +5,7 @@ namespace Filamerce\FilamentTranslatable\Tests\Forms\Fixtures;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filamerce\FilamentTranslatable\Enums\TranslationMode;
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 use Illuminate\Contracts\View\View;
 
@@ -29,6 +30,7 @@ class TestComponentWithTranslate extends Livewire
                     ->displayNamesInLocaleLabels(true)
                     ->locales($this->locales)
                     ->defaultLocale('en')
+                    ->translationMode(TranslationMode::Spatie)
                     ->schema([
                         TextInput::make('title')->requiredDefaultLocale(),
                         Textarea::make('content'),

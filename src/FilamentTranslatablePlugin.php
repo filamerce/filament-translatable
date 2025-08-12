@@ -6,6 +6,7 @@ use Closure;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
+use Filamerce\FilamentTranslatable\Enums\TranslationMode;
 
 class FilamentTranslatablePlugin implements Plugin
 {
@@ -25,6 +26,8 @@ class FilamentTranslatablePlugin implements Plugin
     protected bool | Closure $displayNamesInLocaleLabels = true;
 
     protected string | Closure $flagWidth = '24px';
+
+    protected TranslationMode $translationMode = TranslationMode::Spatie;
 
     public function getId(): string
     {
@@ -59,6 +62,18 @@ class FilamentTranslatablePlugin implements Plugin
         $this->locales = $locales;
 
         return $this;
+    }
+
+    public function translationMode(TranslationMode $mode): static
+    {
+        $this->translationMode = $mode;
+
+        return $this;
+    }
+
+    public function getTranslationMode(): TranslationMode
+    {
+        return $this->translationMode;
     }
 
     public function displayFlagsInLocaleLabels(bool $condition = true): static
