@@ -31,15 +31,15 @@ php artisan filament:assets
 
 ## With `spatie/laravel-translatable`
 
-Package from [spatie](https://github.com/spatie/laravel-translatable) is default supported way of handling translations. Follow instructions from package README.md to properly configure your Model.
+Package from [Spatie](https://github.com/spatie/laravel-translatable) is default supported way of handling translations. Follow instructions from [README](https://github.com/spatie/laravel-translatable/?tab=readme-ov-file#a-trait-to-make-eloquent-models-translatable) to properly configure your models.
 
-## With `Astrotomic/laravel-translatable`
+## With `astrotomic/laravel-translatable`
 
-Package from [spatie](https://github.com/astrotomic/laravel-translatable) is alternative supported way of handling translations.
+Package from [Astrotomic](https://github.com/astrotomic/laravel-translatable) is alternative supported way of handling translations.
 
-Follow [instructions](https://docs.astrotomic.info/laravel-translatable/installation#models) to properly configure your Model, but instead of using `Translatable` trait from Astrotomic package, please use `Filamerce\FilamentTranslatable\Traits\AstrotomicTranslatable`.
+Follow [instructions](https://docs.astrotomic.info/laravel-translatable/installation#models) to properly configure your models, but instead of using `Translatable` trait from Astrotomic package, please use `Filamerce\FilamentTranslatable\Traits\AstrotomicTranslatable`.
 
-In case of using Astrotomic package, please configure plugin with proper mode:
+In case of using Astrotomic package, please configure plugin with to work with Astrotomic mode:
 
 ```php
 use Filamerce\FilamentTranslatable\Enums\TranslationMode;
