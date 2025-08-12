@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 [![Total Downloads](https://img.shields.io/packagist/dt/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 
-Filament Translatable is a bunch of tools that helps managing translations.
+Filament Translatable is a set of tools that help manage translations.
 
 ![translatable component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
 
@@ -31,15 +31,15 @@ php artisan filament:assets
 
 ## With `spatie/laravel-translatable`
 
-Package from [Spatie](https://github.com/spatie/laravel-translatable) is default supported way of handling translations. Follow instructions from [README](https://github.com/spatie/laravel-translatable/?tab=readme-ov-file#a-trait-to-make-eloquent-models-translatable) to properly configure your models.
+The package from [Spatie](https://github.com/spatie/laravel-translatable) is the default supported way of handling translations. Follow the instructions in the [README](https://github.com/spatie/laravel-translatable/?tab=readme-ov-file#a-trait-to-make-eloquent-models-translatable) to properly configure your models.
 
 ## With `astrotomic/laravel-translatable`
 
-Package from [Astrotomic](https://github.com/astrotomic/laravel-translatable) is alternative supported way of handling translations.
+The package from [Astrotomic](https://github.com/astrotomic/laravel-translatable) is an alternative supported way of handling translations.
 
-Follow [instructions](https://docs.astrotomic.info/laravel-translatable/installation#models) to properly configure your models, but instead of using `Translatable` trait from Astrotomic package, please use `Filamerce\FilamentTranslatable\Traits\AstrotomicTranslatable`.
+Follow the [instructions](https://docs.astrotomic.info/laravel-translatable/installation#models) to properly configure your models, but instead of using the `Translatable` trait from the Astrotomic package, please use `Filamerce\FilamentTranslatable\Traits\AstrotomicTranslatable`.
 
-In case of using Astrotomic package, please configure plugin with to work with Astrotomic mode:
+If you use the Astrotomic package, please configure the plugin to work in Astrotomic mode:
 
 ```php
 use Filamerce\FilamentTranslatable\Enums\TranslationMode;
@@ -48,14 +48,14 @@ FilamentTranslatablePlugin::make()
     ->translationMode(TranslationMode::Astrotomic)
 ```
 
-you can also configure translationMode per component:
+You can also configure `translationMode` per component:
 
 ```php
  Translations::make('translations')
     ->translationMode(TranslationMode::Astrotomic)
 ```
 
-or per field:
+Or per field:
 
 ```php
  TextInput::make('name')
@@ -78,7 +78,7 @@ public function panel(Panel $panel): Panel
   
 ### Setting translatable locales
  
-To set up the locales that can be used to translate content, you can pass an array of locales to the `locales()` plugin method:
+To set up the locales that can be used to translate content, pass an array of locales to the `locales()` plugin method:
   
 ```php
 FilamentTranslatablePlugin::make()
@@ -87,7 +87,7 @@ FilamentTranslatablePlugin::make()
 
 ### Setting default locale
 
-You can set default locale using `defaultLocale()` method:
+You can set the default locale using the `defaultLocale()` method:
 
 ```php
 FilamentTranslatablePlugin::make()
@@ -96,7 +96,7 @@ FilamentTranslatablePlugin::make()
 
 ### Setting locale labels
 
-You can set locale labels `getLocaleLabelUsing()` method:
+You can set locale labels using the `getLocaleLabelUsing()` method:
 
 ```php
 FilamentTranslatablePlugin::make()
@@ -108,7 +108,7 @@ FilamentTranslatablePlugin::make()
 
 ### Enable or disable flags in locale labels
 
-You can enable or disable flags in locale labels using (disabled by default):
+You can enable or disable flags in locale labels (disabled by default):
 
 ```php
 FilamentTranslatablePlugin::make()
@@ -117,7 +117,7 @@ FilamentTranslatablePlugin::make()
 
 ### Setting flag width
 
-You can set flag width using:
+You can set the flag width using:
 
 ```php
 FilamentTranslatablePlugin::make()
@@ -126,22 +126,22 @@ FilamentTranslatablePlugin::make()
 
 ### Enable or disable names in locale labels
 
-You can enable or disable locale names in locale labels using (enabled by default):
+You can enable or disable locale names in locale labels (enabled by default):
 
 ```php
 FilamentTranslatablePlugin::make()
     ->displayNamesInLocaleLabels(false)
 ```
 
-Otherwise, config `app.locale` will be taken.
+Otherwise, the config value `app.locale` will be used.
 
-It has effect in couple methods that can be used on fields.
+This affects several methods that can be used on fields.
 
 ## Usage
 
 ### `translatable()` macro
 
-By using the `translatable()` macro, you can quickly configure single [form field](https://filamentphp.com/docs/4.x/forms/fields/getting-started) to support multiple languages and provide translations for each locale.
+By using the `translatable()` macro, you can quickly configure a single [form field](https://filamentphp.com/docs/4.x/forms/fields/getting-started) to support multiple languages and provide translations for each locale.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -154,7 +154,7 @@ TextInput::make('name')
 
 #### Marking field as required for specified locale
 
-By this way "name" field only in "en" language will be required.
+This way, the "name" field will only be required in the "en" language.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -166,7 +166,7 @@ TextInput::make('name')
 
 #### Marking field as required for default locale
 
-By this way "name" field only in default language will be required.
+This way, the "name" field will only be required in the default language.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -178,7 +178,7 @@ TextInput::make('name')
 
 #### Decorating language specified fields
 
-You can fully customize language specified fields using `decorateTranslationField()` method.
+You can fully customize language-specific fields using the `decorateTranslationField()` method.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -191,7 +191,7 @@ TextInput::make('price')
 
 #### Customizing `Translations` component
 
-After using `translatable()` method, the context of field is switched to `Translations` component, so you can use any of method that belongs to component.
+After using the `translatable()` method, the context of the field is switched to the `Translations` component, so you can use any method that belongs to the component.
 
 ```php
 use Filament\Forms\Components\TextInput;
@@ -208,7 +208,7 @@ TextInput::make('price')
 ![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/macro2.png)
 
 > [!CAUTION]
-> Take care to set field specific methods like `required()`, `requiredDefaultLocale()` **before** calling `translatable()` method.
+> Be sure to set field-specific methods like `required()` or `requiredDefaultLocale()` **before** calling the `translatable()` method.
 
 
 ### `Translations` component
@@ -226,15 +226,15 @@ Translations::make('translations') // name is required to properly handle action
 
 ![translatable horizontal component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/horizontal-component.png)
 
-> [!NOTE]  
-> Using `translatable()` method within `Translations` component is not needed.
+> [!NOTE]
+> Using the `translatable()` method within the `Translations` component is not needed.
 
-> [!IMPORTANT]  
-> Take care to set different names for each `Translations` component in multiple usage.
+> [!IMPORTANT]
+> Be sure to set different names for each `Translations` component when using multiple instances.
 
 #### Setting the translatable locales for a particular fields
 
-By default, the translatable locales can be set globally for all translate form component in the plugin configuration. Alternatively, you can customize the translatable locales for a particular resource by overriding the `locales()` method in `Translate` class:
+By default, the translatable locales can be set globally for all translation form components in the plugin configuration. Alternatively, you can customize the translatable locales for a particular resource by overriding the `locales()` method in the `Translate` class:
 
 ```php
 Translations::make('translations')
@@ -244,7 +244,7 @@ Translations::make('translations')
 
 #### Setting the translatable label for a particular field
 
-You have the flexibility to customize the translate label for each field in each locale. You can use the `fieldTranslatableLabel()` method to provide custom labels based on the field instance and the current locale.
+You have the flexibility to customize the translation label for each field in each locale. You can use the `fieldTranslatableLabel()` method to provide custom labels based on the field instance and the current locale.
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -258,7 +258,7 @@ use Filamerce\FilamentTranslatable\Forms\Component\Translations;
 
 #### Adding prefix/suffix locale label to the field
 
-If you simply want to add a prefix or suffix locale label to the form field, you can use the `prefixLocaleLabel()` or `suffixLocaleLabel()` method. This makes it easier for users to identify the language associated with each field.
+If you want to add a prefix or suffix locale label to the form field, you can use the `prefixLocaleLabel()` or `suffixLocaleLabel()` method. This makes it easier for users to identify the language associated with each field.
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -273,7 +273,7 @@ Translations::make('translations')
 
 #### Setting the locale display name
 
-By default, the prefix/suffix locale display name is generated by locale code and enclosed in parentheses, "()". You may customize this using the `preformLocaleLabelUsing()` method:
+By default, the prefix/suffix locale display name is generated from the locale code and enclosed in parentheses, "()". You may customize this using the `preformLocaleLabelUsing()` method:
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -284,7 +284,7 @@ Translations::make('translations')
 
 #### Injecting the current form field
 
-Additionally, if you need to access the current form field instance, you can inject the `$field` parameter into the callback functions. This allows you to perform specific actions or conditions based on the field being processed.
+Additionally, if you need to access the current form field instance, you can inject the `$field` parameter into the callback functions. This allows you to perform specific actions or apply conditions based on the field being processed.
 
 ```php
 use Filament\Forms\Components\Component;
@@ -305,7 +305,7 @@ Translations::make('translations')
 
 #### Adding action 
 
-You may add actions before each container of children components using the `actions()` method:
+You may add actions before each container of child components using the `actions()` method:
 
 ```php
 
@@ -317,12 +317,10 @@ Translations::make('translations')
         Action::make('fillDumpTitle')
     ])
 ```
-> *If have multiple `Translate` components and have action in each component, please add id to `Translate` component by `id()` method*
-
 
 #### Injecting the locale on current child container
 
-If you wish to access the locale that have been passed to the action, define an `$arguments` parameter and get the value of `locale` from `$arguments`:
+If you wish to access the locale that has been passed to the action, define an `$arguments` parameter and get the value of `locale` from `$arguments`:
 
 ```php
 
@@ -354,7 +352,7 @@ Translations::make()
 ```
 
 #### Removing the styled container
-By default, translate component and their content are wrapped in a container styled as a card. You may remove the styled container using `contained()`:
+By default, the translate component and its content are wrapped in a container styled as a card. You may remove the styled container using `contained()`:
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -365,7 +363,7 @@ Translations::make()
 
 #### Vertical tabs
 
-You can display translations as a vertical tabs:
+You can display translations as vertical tabs:
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -376,7 +374,7 @@ Translations::make()
 
 #### Changing plugin settings
 
-You can customize plugin settings directly on component:
+You can customize plugin settings directly on the component:
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -388,7 +386,7 @@ Translations::make()
 ```
 
 #### Exclude 
-The `exclude` feature allows you to specify fields that you don't want to be included in the translation process. This can be useful for fields that contain dynamic content or that shouldn't be translated into other languages.
+The `exclude` feature allows you to specify fields that you don't want to include in the translation process. This can be useful for fields that contain dynamic content or that shouldn't be translated into other languages.
 
 ```php
 use Filamerce\FilamentTranslatable\Forms\Component\Translations;
@@ -400,7 +398,7 @@ Translations::make('translations')
     ])
     ->exclude(['description'])
 ```
-Without exclude
+Without `exclude`:
 ```json
 {
     "title": {
@@ -415,7 +413,7 @@ Without exclude
     }
 }
 ```
-With Exclude
+With `exclude`:
 ```json
 {
     "title": {
@@ -428,7 +426,7 @@ With Exclude
 ```
 ## Publishing Views
 
-To publish the views, use:
+To publish the views, run:
 
 ```bash
 php artisan vendor:publish --provider="Filamerce\\FilamentTranslatable\\FilamentTranslatableProvider" --tag="filament-translate-field-views"
@@ -450,16 +448,16 @@ See [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 ## Security Vulnerabilities
 
-If you discover any security related issues, please email code@webard.me instead of using the issue tracker.
+If you discover any security-related issues, please email code@webard.me instead of using the issue tracker.
 
 ## Credits
 
 - [Lipis](https://github.com/lipis/flag-icons) for icons
 - [Solution Forest](https://github.com/solutionforest/filament-translate-field) for great inspiration
-- [Outer Web](https://github.com/outer-web/filament-translatable-fields) for Macro idea
+- [Outer Web](https://github.com/outer-web/filament-translatable-fields) for the macro idea
 - [All Contributors](../../contributors)
 
 ## License
 
-Filament Tree is open-sourced software licensed under the [MIT license](LICENSE.md).
+Filament Translatable is open-sourced software licensed under the [MIT license](LICENSE.md).
 
