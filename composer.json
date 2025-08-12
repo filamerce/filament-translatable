@@ -11,6 +11,7 @@
         "locale",
         "laravel-translatable",
         "spatie-translatable",
+        "astrotomic-translatable",
         "filament-translatable",
         "filament-translate-field"
     ],
@@ -28,7 +29,8 @@
         }
     ],
     "suggest": {
-        "spatie/laravel-translatable": "For handling translations in Laravel using JSON fields."
+        "spatie/laravel-translatable": "For handling translations in Laravel using JSON fields.",
+        "astrotomic/laravel-translatable": "Alternative way for handling translations in Laravel using separate database tables."
     },
     "require": {
         "php": "^8.2",

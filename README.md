@@ -429,7 +429,7 @@ With `exclude`:
 To publish the views, run:
 
 ```bash
-php artisan vendor:publish --provider="Filamerce\\FilamentTranslatable\\FilamentTranslatableProvider" --tag="filament-translate-field-views"
+php artisan vendor:publish --provider="Filamerce\\FilamentTranslatable\\FilamentTranslatableProvider" --tag="filament-translatable-views"
 ```
 
 ## Testing
