@@ -11,7 +11,7 @@ Filament Translatable is a bunch of tools that helps managing translations.
 
 | Filament Version | Filament Translate Field Version |
 |------------------|---------------------------|
-| v4.x             | v1.x
+| v4.x             | v2.x
 
 
 You can install the package via composer:
