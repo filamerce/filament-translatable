@@ -20,6 +20,7 @@ class Translations extends Tabs
     /**
      * @var view-string
      */
+    // @phpstan-ignore property.defaultValue
     protected string $view = 'filament-translatable::forms.components.translations';
 
     /**
@@ -310,7 +311,7 @@ class Translations extends Tabs
                 // @phpstan-ignore method.notFound
                 $localeComponent->defaultLocale($this->getDefaultLocale());
 
-                if ($this->requiredDefaultLocale ?? false) {
+                if ($localeComponent->requiredDefaultLocale ?? false) {
                     // this is macro
                     // @phpstan-ignore method.notFound, method.notFound
                     $localeComponent->requiredLocale($localeComponent->getDefaultLocale() ?? $this->getDefaultLocale());
