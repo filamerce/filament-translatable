@@ -310,7 +310,7 @@ class Translations extends Tabs
                 // @phpstan-ignore method.notFound
                 $localeComponent->defaultLocale($this->getDefaultLocale());
 
-                if ($this->requiredDefaultLocale ?? false) {
+                if ($localeComponent->requiredDefaultLocale ?? false) {
                     // this is macro
                     // @phpstan-ignore method.notFound, method.notFound
                     $localeComponent->requiredLocale($localeComponent->getDefaultLocale() ?? $this->getDefaultLocale());
