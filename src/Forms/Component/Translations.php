@@ -185,7 +185,7 @@ class Translations extends Tabs
         $label = null;
 
         if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
-            $label .= '<img src="' . \asset('vendor/filament-translatable/flags/' . $locale . '.svg') . '" style="width:' . $this->getFlagWidth() . '" alt="' . $locale . '" class="inline-block align-middle' . ($this->hasNamesInLocaleLabels() ? ' me-2' : '') . '" />';
+            $label .= '<img src="' . \asset('vendor/filament-translatable/flags/' . $locale . '.svg') . '" style="width:' . $this->getFlagWidth() . ';max-width:' . $this->getFlagWidth() . '" alt="' . $locale . '" class="inline-block align-middle' . ($this->hasNamesInLocaleLabels() ? ' me-2' : '') . '" />';
         }
 
         if ($this->hasNamesInLocaleLabels()) {
