@@ -20,7 +20,9 @@
     );
 
 @endphp
+@if (! $this instanceof \Filament\Tables\Contracts\HasTable)
  <x-filament-actions::modals />
+ @endif
 
 @if (blank($livewireProperty))
     <div x-load
