@@ -8,6 +8,7 @@ use Filament\Forms\Components\Field;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Schema;
+use Filamerce\FilamentTranslatable\Dto\Locale;
 use Filamerce\FilamentTranslatable\Enums\TranslationMode;
 use Filamerce\FilamentTranslatable\FilamentTranslatablePlugin;
 use Filamerce\FilamentTranslatable\Forms\Component\Translations\Tab;
@@ -157,46 +158,56 @@ class Translations extends Tabs
     }
 
     /**
-     * @return array<string>|Collection<int,string>
+     * @return array<Locale>
      */
-    public function getLocales(): array | Collection
+    public function getLocales(): array
     {
-        return $this->evaluate($this->locales) ?? FilamentTranslatablePlugin::get()->getLocales();
+        $locales = $this->evaluate($this->locales ?? FilamentTranslatablePlugin::get()->getLocales());
+
+        if ($locales instanceof Collection) {
+            $locales = $locales->all();
+        }
+
+        $preparedLocales = [];
+
+        foreach ($locales as $key => $value) {
+            // If the key is an integer, create a new Locale with the code only
+            if (is_int($key)) {
+                if (is_string($value)) {
+                    $preparedLocales[$key] = new Locale($value);
+
+                    continue;
+                }
+            }
+
+            // If the key is a string, create a new Locale with the key as code and value as label
+            if (is_string($key)) {
+                $preparedLocales[$key] = new Locale($key, $value);
+
+                continue;
+            }
+
+            // Otherwise, treat the value as a Locale
+            $preparedLocales[] = $value;
+        }
+
+        return $preparedLocales;
     }
 
-    /**
-     * @return array<string>|Collection<int,string>
-     */
-    public function getLocaleLabels(): array | Collection
+    public function getLocaleLabel(Locale $locale, bool $withFlag = true): string | Htmlable
     {
-        return $this->evaluate($this->localeLabels)
-            ?? collect($this->getLocales())
-                ->map(fn ($locale) => FilamentTranslatablePlugin::get()->getLocaleLabel($locale, $locale))
-                ->all();
-    }
-
-    public function getLocaleLabel(string $locale, bool $withFlag = true): string | Htmlable
-    {
-
-        $labels = $this->evaluate($this->localeLabels, [
-            'locale' => $locale,
-        ]) ?? FilamentTranslatablePlugin::get()->getLocaleLabel($locale, $locale);
-
         $label = null;
 
         if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
-            $label .= '<img src="' . \asset('vendor/filament-translatable/flags/' . $locale . '.svg') . '" style="width:' . $this->getFlagWidth() . ';max-width:' . $this->getFlagWidth() . '" alt="' . $locale . '" class="inline-block align-middle' . ($this->hasNamesInLocaleLabels() ? ' me-2' : '') . '" />';
+            $label .= '<img src="' . \asset($locale->flag) . '" style="width:' . $this->getFlagWidth() . ';max-width:' . $this->getFlagWidth() . '" alt="' . $locale->label . '" class="inline-block align-middle' . ($this->hasNamesInLocaleLabels() ? ' me-2' : '') . '" />';
         }
 
         if ($this->hasNamesInLocaleLabels()) {
-            if ($labels && is_array($labels)) {
-                $label .= data_get($labels, $locale);
-            } elseif ($labels && is_string($labels)) {
-                $label .= $labels;
-            }
+            $label .= $locale->label;
+
         }
 
-        $label = $label ?? $locale;
+        $label = $label ?? $locale->code;
         if ($this->hasFlagsInLocaleLabels() && $withFlag === true) {
             $label = new HtmlString('<div class="text-nowrap">' . $label . '</div>');
         }
@@ -204,7 +215,7 @@ class Translations extends Tabs
         return $label;
     }
 
-    public function hasPrefixLocaleLabel(Component $component, string $locale): bool
+    public function hasPrefixLocaleLabel(Component $component, Locale $locale): bool
     {
         return boolval($this->evaluate($this->hasPrefixLocaleLabel, [
             'field' => $component,
@@ -212,7 +223,7 @@ class Translations extends Tabs
         ]) ?? false);
     }
 
-    public function hasSuffixLocaleLabel(Component $component, string $locale): bool
+    public function hasSuffixLocaleLabel(Component $component, Locale $locale): bool
     {
         return boolval($this->evaluate($this->hasSuffixLocaleLabel, [
             'field' => $component,
@@ -220,7 +231,7 @@ class Translations extends Tabs
         ]) ?? false);
     }
 
-    public function getFieldTranslatableLabel(Component $component, string $locale): ?string
+    public function getFieldTranslatableLabel(Component $component, Locale $locale): ?string
     {
         return $this->evaluate($this->fieldTranslatableLabel, [
             'field' => $component,
@@ -272,16 +283,17 @@ class Translations extends Tabs
         $locales = $this->getLocales();
 
         foreach ($locales as $locale) {
-            $containers[$locale] = Schema::make($this->getLivewire())
+
+            $containers[$locale->code] = Schema::make($this->getLivewire())
                 ->parentComponent($this)
                 ->components([
-                    Tab::make($locale)
+                    Tab::make($locale->label)
                         ->registerActions($this->getActions())
                         ->label($this->getLocaleLabel($locale))
-                        ->locale($locale)
+                        ->locale($locale->code)
 
                         ->schema(
-                            (new Collection($this->getChildComponentsByLocale($locale)['default']))
+                            (new Collection($this->getChildComponentsByLocale($locale->code)['default']))
                                 ->map(fn ($component) => $this->prepareTranslateLocaleComponent($component, $locale))
                                 ->all()
                         ),
@@ -292,7 +304,7 @@ class Translations extends Tabs
         return $containers;
     }
 
-    protected function prepareTranslateLocaleComponent(Component | Htmlable | string $component, string $locale): Component | Htmlable | string
+    protected function prepareTranslateLocaleComponent(Component | Htmlable | string $component, Locale $locale): Component | Htmlable | string
     {
 
         if (($component instanceof Htmlable && ! $component instanceof Component) || \is_string($component)) {
@@ -343,12 +355,12 @@ class Translations extends Tabs
                 if (method_exists($localeComponent, 'name')) {
                     switch ($this->getTranslationMode()) {
                         case TranslationMode::Astrotomic:
-                            $localeComponentName = "{$localeComponentName}:{$locale}";
+                            $localeComponentName = "{$localeComponentName}:{$locale->code}";
 
                             break;
                         case TranslationMode::Spatie:
                         default:
-                            $localeComponentName = "{$localeComponentName}.{$locale}";
+                            $localeComponentName = "{$localeComponentName}.{$locale->code}";
 
                             break;
                     }
@@ -361,8 +373,8 @@ class Translations extends Tabs
 
                 $decorator = $localeComponent->translationFieldDecorators ?? null;
 
-                if (isset($decorator[$locale]) && is_array($decorator[$locale])) {
-                    foreach ($decorator[$locale] as $callback) {
+                if (isset($decorator[$locale->code]) && is_array($decorator[$locale->code])) {
+                    foreach ($decorator[$locale->code] as $callback) {
                         $localeComponent = $callback($localeComponent);
                     }
                 }

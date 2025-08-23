@@ -15,9 +15,9 @@ class FilamentTranslatablePlugin implements Plugin
     /**
      * @var array<string>
      */
-    protected array $locales = [];
+    protected array | Closure | null $locales = [];
 
-    protected ?string $defaultLocale = null;
+    protected string | null | Closure $defaultLocale = null;
 
     protected ?Closure $getLocaleLabelUsing = null;
 
@@ -55,9 +55,9 @@ class FilamentTranslatablePlugin implements Plugin
     }
 
     /**
-     * @param  array<string> | null  $locales
+     * @param  array<string> | Closure |null  $locales
      */
-    public function locales(?array $locales = null): static
+    public function locales(array | Closure | null $locales = null): static
     {
         $this->locales = $locales;
 
@@ -100,13 +100,6 @@ class FilamentTranslatablePlugin implements Plugin
         return $this->displayNamesInLocaleLabels;
     }
 
-    public function getLocaleLabelUsing(?Closure $callback): static
-    {
-        $this->getLocaleLabelUsing = $callback;
-
-        return $this;
-    }
-
     public function flagWidth(string | Closure $width): static
     {
         $this->flagWidth = $width;
@@ -122,7 +115,7 @@ class FilamentTranslatablePlugin implements Plugin
     /**
      * @return array<string>
      */
-    public function getLocales(): array
+    public function getLocales(): Closure | array | null
     {
         return $this->locales;
     }
@@ -134,21 +127,8 @@ class FilamentTranslatablePlugin implements Plugin
         return $this;
     }
 
-    public function getDefaultLocale(): string
+    public function getDefaultLocale(): string | Closure
     {
-        return $this->evaluate($this->defaultLocale ?? config('app.locale', 'en'));
-    }
-
-    public function getLocaleLabel(string $locale, ?string $displayLocale = null): ?string
-    {
-        $displayLocale ??= app()->getLocale();
-
-        $label = null;
-
-        if ($callback = $this->getLocaleLabelUsing) {
-            $label = $callback($locale, $displayLocale);
-        }
-
-        return $label ?? (locale_get_display_name($locale, $displayLocale) ?: null);
+        return $this->defaultLocale ?? config('app.fallback_locale', 'en');
     }
 }
