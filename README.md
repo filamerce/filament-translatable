@@ -85,6 +85,23 @@ FilamentTranslatablePlugin::make()
      ->locales(['en', 'pl', 'fr']),
 ```
 
+
+You can set locale labels using key => value array:
+
+```php
+FilamentTranslatablePlugin::make()
+    ->locales([
+        'pl' => __('Polish'),
+        'en' => __('English')
+    ])
+```
+
+Also, you can pass a Closure:
+```php
+FilamentTranslatablePlugin::make()
+    ->locales(fn () => Language::pluck('code', 'name'))
+```
+
 ### Setting default locale
 
 You can set the default locale using the `defaultLocale()` method:
@@ -92,18 +109,6 @@ You can set the default locale using the `defaultLocale()` method:
 ```php
 FilamentTranslatablePlugin::make()
      ->defaultLocale('pl'),
-```
-
-### Setting locale labels
-
-You can set locale labels using the `getLocaleLabelUsing()` method:
-
-```php
-FilamentTranslatablePlugin::make()
-    ->getLocaleLabelUsing(fn ($locale) => match ($locale) {
-        'pl' => __('Polish'),
-        'en' => __('English')
-    })
 ```
 
 ### Enable or disable flags in locale labels
