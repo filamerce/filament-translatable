@@ -5,7 +5,7 @@
 
 Filament Translatable is a set of tools that help manage translations.
 
-![translatable component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/component.png)
+![translatable component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/v3/screenshots/component.png)
 
 ## Installation
 
@@ -155,7 +155,7 @@ TextInput::make('name')
     ->translatable()
 ```
 
-![translatable macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/macro.png)
+![translatable macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/v3/screenshots/macro.png)
 
 #### Marking field as required for specified locale
 
@@ -210,7 +210,7 @@ TextInput::make('price')
     ->flagWidth('48px')
 ```
 
-![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/macro2.png)
+![translatable custom macro](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/v3/screenshots/macro2.png)
 
 > [!CAUTION]
 > Be sure to set field-specific methods like `required()` or `requiredDefaultLocale()` **before** calling the `translatable()` method.
@@ -229,7 +229,7 @@ Translations::make('translations') // name is required to properly handle action
     ])
 ```
 
-![translatable horizontal component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/filament-4/screenshots/horizontal-component.png)
+![translatable horizontal component](https://raw.githubusercontent.com/filamerce/filament-translatable/refs/heads/v3/screenshots/horizontal-component.png)
 
 > [!NOTE]
 > Using the `translatable()` method within the `Translations` component is not needed.
