@@ -19,6 +19,8 @@
         fn($components) => Arr::first($components, fn($component) => $component instanceof Tab),
     );
 
+    $tabCount = $tabs->count();
+
 @endphp
 @if (! $this instanceof \Filament\Tables\Contracts\HasTable)
  <x-filament-actions::modals />
@@ -40,12 +42,12 @@
                     'wire:key' => $getLivewireKey() . '.container',
                 ],
                 escape: false,
-            )->merge($getExtraAttributes(), escape: false)->merge($getExtraAlpineAttributes(), escape: false)->class(['fi-sc-tabs', 'fi-contained' => $isContained, 'fi-vertical' => $isVertical]) }}>
+            )->merge($getExtraAttributes(), escape: false)->merge($getExtraAlpineAttributes(), escape: false)->class(['fi-sc-tabs', 'fi-contained' => $isContained, 'fi-vertical' => $isVertical && $tabCount > 1]) }}>
         <input type="hidden"
             value="{{ collect($tabs)->filter(static fn(Tab $tab): bool => $tab->isVisible())->map(static fn(Tab $tab) => $tab->getKey(isAbsolute: false))->values()->toJson() }}"
             x-ref="tabsData" />
 
-        <x-filament::tabs :contained="$isContained" :label="$label" :vertical="$isVertical" x-cloak>
+        <x-filament::tabs :contained="$isContained" :label="$label" :vertical="$isVertical" x-cloak :hidden="$tabCount === 1">
             @foreach ($getStartRenderHooks() as $startRenderHook)
                 {{ \Filament\Support\Facades\FilamentView::renderHook($startRenderHook, scopes: $renderHookScopes) }}
             @endforeach
@@ -66,8 +68,9 @@
 
                         <x-filament::tabs.item :alpine-active="'tab === \'' . $tabKey . '\''" :badge="$tabBadge" :badge-color="$tabBadgeColor" :badge-icon="$tabBadgeIcon"
                             :badge-icon-position="$tabBadgeIconPosition" :badge-tooltip="$tabBadgeTooltip" :icon="$tabIcon" :icon-position="$tabIconPosition"
-                            :x-on:click="'tab = \'' . $tabKey . '\''" :attributes="$tabExtraAttributeBag">
+                            :x-on:click="'tab = \'' . $tabKey . '\''" :attributes="$tabExtraAttributeBag" :hidden="$tabCount === 1">
                             {{ $tab->getLabel() }}
+
                         </x-filament::tabs.item>
                     @endforeach
                 </div>
@@ -100,7 +103,7 @@
         </x-filament::tabs>
 
 
- @if ($hasActions && $isVertical)
+ @if ($hasActions && ($isVertical || $tabCount === 1))
         <div class="flex flex-col grow">
              @foreach ($tabs as $tab)
                             <div class="fi-ac pt-6 pe-6 justify-end"
