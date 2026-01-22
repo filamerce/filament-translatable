@@ -1,5 +1,7 @@
 # Filament Translatable
 
+## The package was moved here: [https://github.com/webard/filament-translatable]
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 [![Total Downloads](https://img.shields.io/packagist/dt/filamerce/filament-translatable.svg?style=flat-square)](https://packagist.org/packages/filamerce/filament-translatable)
 
